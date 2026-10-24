@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F4D3A">
+<meta name="description" content="A companion for the Order of Christian Initiation of Adults (OCIA).">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Way Home">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="app.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>The Way Home — An OCIA Journey</title>
+<script>
+  try { const t = localStorage.getItem('ocia.theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (_) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{
+  --bg:#F3F4EF; --surface:#FFFFFF; --ink:#1C231F; --muted:#5B665F; --line:#D9DED4;
+  --green:#1F4D3A; --leaf:#2F6B52; --gold:#A27B2E; --gold-soft:#F4ECD9; --danger:#9B2C3B;
+  --nav:#1F4D3A; --nav-ink:#CFE0D6; --nav-active:#FFFFFF; --on-accent:#FFFFFF;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111814; --surface:#1A231E; --ink:#E7EEE9; --muted:#A3B2A9; --line:#2D3A33;
+    --green:#9FD0B6; --leaf:#7CC2A0; --gold:#D9B46A; --gold-soft:#2C2617; --danger:#E58A97;
+    --nav:#0B110E; --nav-ink:#8FA398; --nav-active:#FFFFFF; --on-accent:#111814;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111814; --surface:#1A231E; --ink:#E7EEE9; --muted:#A3B2A9; --line:#2D3A33;
+  --green:#9FD0B6; --leaf:#7CC2A0; --gold:#D9B46A; --gold-soft:#2C2617; --danger:#E58A97;
+  --nav:#0B110E; --nav-ink:#8FA398; --nav-active:#FFFFFF; --on-accent:#111814;
+  color-scheme:dark;
+}
+html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+*,*::before,*::after{ box-sizing:inherit; }
+body{ margin:0; background:var(--bg); color:var(--ink); font:400 17px/1.55 "Source Sans 3","Segoe UI",system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+main{ max-width:640px; margin:0 auto; padding:16px 20px calc(96px + env(safe-area-inset-bottom,0px)); }
+h1,h2,.serif{ font-family:"Cormorant Garamond","Iowan Old Style",Georgia,serif; }
+h1{ font-weight:600; font-size:2.5rem; line-height:1.05; margin:.15em 0 .3em; color:var(--green); }
+h2{ font-weight:600; font-size:1.6rem; line-height:1.2; margin:1.6em 0 .4em; color:var(--green); }
+h3{ font-size:.95rem; margin:1.1em 0 .3em; color:var(--muted); font-weight:600; letter-spacing:.02em; }
+p{ margin:.6em 0; }
+.kicker{ font-family:"Cormorant Garamond",Georgia,serif; font-style:italic; color:var(--gold); font-size:1.15rem; }
+.lede{ color:var(--muted); font-size:1.05rem; }
+.hint{ font-size:.88rem; color:var(--muted); margin:.2em 0 .5em; }
+.empty{ color:var(--muted); font-style:italic; }
+a{ color:var(--leaf); }
+
+/* Top bar */
+.topbar{ display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.brand{ flex:1; font-family:"Cormorant Garamond",Georgia,serif; font-size:1.15rem; color:var(--muted); }
+.icon-btn{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--line); background:var(--surface); color:var(--muted); font:600 .85rem "Source Sans 3",sans-serif; padding:7px 12px; border-radius:999px; cursor:pointer; }
+.icon-btn svg{ width:16px; height:16px; }
+
+/* Forms */
+label.field{ display:block; font-weight:600; margin:1.1em 0 .35em; }
+input[type=text],input[type=tel],input[type=email],input[type=date],input[type=search],textarea,select{
+  width:100%; font:inherit; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:10px 12px;
+}
+textarea{ min-height:96px; resize:vertical; }
+.toggle{ display:flex; gap:10px; align-items:flex-start; margin:.7em 0; cursor:pointer; }
+input[type=checkbox]{ accent-color:var(--leaf); width:20px; height:20px; flex:none; margin:3px 0 0; }
+button{ font:600 1rem "Source Sans 3",sans-serif; border-radius:999px; padding:11px 20px; cursor:pointer; border:1.5px solid var(--leaf); background:transparent; color:var(--leaf); }
+button.primary{ background:var(--leaf); color:var(--on-accent); }
+button.small{ font-size:.9rem; padding:7px 15px; }
+button.quiet{ border-color:transparent; }
+button.danger{ border-color:var(--danger); color:var(--danger); }
+.actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:1.4em 0 .6em; }
+:focus-visible{ outline:2px solid var(--leaf); outline-offset:3px; }
+
+.card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:1em 0; }
+.card.gold{ background:var(--gold-soft); border-color:transparent; border-left:3px solid var(--gold); }
+
+/* Next rite */
+.next .label{ font-size:.85rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.06em; }
+.next .title{ font-family:"Cormorant Garamond",Georgia,serif; font-size:1.55rem; line-height:1.2; color:var(--green); margin:.15em 0; }
+.next .when{ color:var(--ink); }
+.next .count{ font-family:"Cormorant Garamond",Georgia,serif; font-size:2.6rem; line-height:1; color:var(--gold); float:right; margin:0 0 0 12px; text-align:center; }
+.next .count small{ display:block; font-family:"Source Sans 3",sans-serif; font-size:.75rem; color:var(--muted); }
+
+/* Path choice */
+.choice{ display:block; width:100%; text-align:left; border-radius:12px; padding:16px 18px; margin:.7em 0; border:1.5px solid var(--line); background:var(--surface); color:var(--ink); font-weight:400; }
+.choice strong{ display:block; font-family:"Cormorant Garamond",Georgia,serif; font-size:1.35rem; color:var(--green); }
+.choice span{ color:var(--muted); font-size:.95rem; }
+
+/* Timeline */
+.period{ position:relative; margin:1.8em 0 .4em; }
+.period h2{ margin:0; }
+.period p{ margin:.2em 0 .4em; color:var(--muted); font-size:.95rem; }
+.here{ display:inline-block; font:600 .72rem "Source Sans 3",sans-serif; text-transform:uppercase; letter-spacing:.08em; color:var(--on-accent); background:var(--gold); padding:3px 9px; border-radius:999px; vertical-align:middle; margin-left:8px; }
+.path{ position:relative; margin-left:13px; border-left:2px solid var(--line); padding-left:0; }
+details.rite{ position:relative; padding-left:26px; }
+details.rite summary{ list-style:none; cursor:pointer; padding:12px 0; }
+details summary::-webkit-details-marker{ display:none; }
+.dot{ position:absolute; left:-9px; top:16px; width:16px; height:16px; border-radius:50%; background:var(--bg); border:2px solid var(--line); }
+details.rite.done .dot{ background:var(--leaf); border-color:var(--leaf); }
+details.rite.next-up .dot{ border-color:var(--gold); box-shadow:0 0 0 4px var(--gold-soft); }
+.rite-title{ display:block; font-weight:600; }
+.rite-date{ font-size:.9rem; color:var(--muted); }
+.rite-body{ padding:0 0 18px; }
+.rite-body .about{ font-size:.97rem; }
+.rite-body ul{ padding-left:1.1em; margin:.4em 0; }
+.rite-body li{ margin:.25em 0; }
+
+/* Sessions */
+details.session{ border-top:1px solid var(--line); }
+details.session:last-of-type{ border-bottom:1px solid var(--line); }
+details.session summary{ list-style:none; cursor:pointer; padding:13px 2px; }
+.s-date{ font-size:.85rem; color:var(--muted); display:block; }
+.s-topic{ font-family:"Cormorant Garamond",Georgia,serif; font-size:1.35rem; color:var(--green); line-height:1.2; }
+.plain{ white-space:pre-wrap; }
+.qlist{ list-style:none; padding:0; margin:.3em 0; }
+.qlist li{ display:flex; gap:10px; align-items:flex-start; padding:6px 0; }
+.qlist li.answered span{ color:var(--muted); text-decoration:line-through; }
+.qlist small{ display:block; color:var(--muted); font-size:.8rem; }
+
+/* Saints */
+.chips{ display:flex; gap:8px; overflow-x:auto; padding:4px 0 8px; margin:.6em 0; scrollbar-width:none; }
+.chips::-webkit-scrollbar{ display:none; }
+.chip{ flex:none; font-size:.88rem; padding:6px 13px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--muted); }
+.chip[aria-pressed="true"]{ background:var(--leaf); border-color:var(--leaf); color:var(--on-accent); }
+.saint{ display:flex; gap:12px; align-items:flex-start; border-top:1px solid var(--line); padding:14px 0; }
+.saint:last-child{ border-bottom:1px solid var(--line); }
+.saint .info{ flex:1; }
+.saint .name{ font-family:"Cormorant Garamond",Georgia,serif; font-size:1.3rem; color:var(--green); line-height:1.2; }
+.saint .meta{ font-size:.85rem; color:var(--muted); }
+.saint .pat{ font-size:.92rem; margin:.25em 0; }
+.saint .note{ font-size:.95rem; margin:.2em 0 0; }
+.star{ border:0; padding:4px 6px; font-size:1.5rem; line-height:1; color:var(--line); background:transparent; }
+.star[aria-pressed="true"]{ color:var(--gold); }
+.chosen{ font-family:"Cormorant Garamond",Georgia,serif; font-size:1.25rem; color:var(--gold); }
+
+/* Bottom nav */
+nav{ position:fixed; left:0; right:0; bottom:0; background:var(--nav); padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px)); z-index:10; }
+nav ol{ list-style:none; margin:0 auto; padding:0; display:flex; max-width:640px; }
+nav li{ flex:1; }
+nav button{ width:100%; border:0; border-radius:8px; background:transparent; color:var(--nav-ink); padding:6px 2px; font-size:.76rem; display:flex; flex-direction:column; align-items:center; gap:3px; }
+nav button svg{ width:22px; height:22px; }
+nav button[aria-current="page"]{ color:var(--nav-active); background:rgba(255,255,255,.1); }
+
+section[hidden]{ display:none; }
+.fade{ animation:fade .3s ease; }
+@keyframes fade{ from{opacity:0} to{opacity:1} }
+@media (prefers-reduced-motion: reduce){ .fade{ animation:none; } }
+.credit{ font-size:.8rem; color:var(--muted); margin-top:1.4em; }
+details.settings{ margin-top:2.4em; border:1px solid var(--line); border-radius:12px; background:var(--surface); padding:0 16px; }
+details.settings summary{ list-style:none; cursor:pointer; padding:14px 0; font-weight:600; }
+details.settings > div{ padding-bottom:16px; }
+.btnlink{ display:inline-block; font:600 .9rem "Source Sans 3",sans-serif; padding:7px 15px; border-radius:999px; border:1.5px solid var(--leaf); color:var(--leaf); text-decoration:none; }
+.pathline{ display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; margin:-.2em 0 .4em; color:var(--muted); }
+.linkbtn{ border:0; padding:2px 4px; font-size:.95rem; color:var(--leaf); text-decoration:underline; text-underline-offset:3px; border-radius:4px; }
+.install{ display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:12px; padding:14px 16px; margin:.4em 0 1em; }
+.install[hidden]{ display:none; }
+.install img{ width:44px; height:44px; border-radius:10px; flex:none; }
+.install div{ flex:1 1 12rem; font-size:.95rem; }
+.install strong{ display:block; }
+.install span{ color:var(--muted); font-size:.88rem; }
+.status{ font-size:.9rem; color:var(--leaf); min-height:1.2em; }
+</style>
+</head>
+<body>
+<main>
+<div class="topbar">
+  <span class="brand">The Way Home</span>
+  <button class="icon-btn" id="themeBtn" aria-label="Change appearance">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
+    <span id="themeLabel">Auto</span>
+  </button>
+  <button class="icon-btn" id="aboutBtn" aria-label="About">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 7.2v4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="4.9" r="1" fill="currentColor"/></svg>
+    <span>About</span>
+  </button>
+</div>
+
+<div class="install" id="installCard" hidden>
+  <img src="icons/icon-192.png" alt="">
+  <div><strong>Install The Way Home</strong><span id="installText">Install this app on your device for quick, offline access.</span></div>
+  <button class="small primary" id="installBtn" hidden>Install</button>
+  <button class="small quiet" id="installDismiss">Not now</button>
+</div>
+<section id="v-journey" class="fade"></section>
+<section id="v-sessions" hidden></section>
+<section id="v-session-edit" hidden></section>
+<section id="v-saints" hidden></section>
+<section id="v-sponsor" hidden></section>
+<section id="v-about" hidden></section>
+</main>
+
+<nav aria-label="Sections">
+  <ol>
+    <li><button data-tab="journey" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 17c6 0 2-9 8-10"/></svg>Journey</button></li>
+    <li><button data-tab="sessions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M6 3h11a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6z"/><path d="M6 3v18M9.5 8h5M9.5 12h5"/></svg>Sessions</button></li>
+    <li><button data-tab="saints"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="5" ry="1.8"/><path d="M12 9.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM6.5 21c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6"/></svg>Saints</button></li>
+    <li><button data-tab="sponsor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="8.5" cy="8" r="2.8"/><circle cx="16" cy="9" r="2.4"/><path d="M3.5 19c.5-3 2.6-4.6 5-4.6s4.5 1.6 5 4.6M14.5 14.6c2.6-.4 5 1 5.6 4.4"/></svg>Sponsor</button></li>
+  </ol>
+</nav>
+
+<script>
+/* ================= Content ================= */
+const PERIODS = [
+  { id:'inquiry', name:'Inquiry', full:'Period of Evangelization and Precatechumenate',
+    desc:'A time of questions and first conversion: hearing the Gospel, meeting the community, and discerning whether to go on.' },
+  { id:'catechumenate', name:'Catechumenate', full:'Period of the Catechumenate',
+    desc:'Formation in the faith, prayer, Scripture and Christian life, often lasting a year or more, accompanied by your sponsor and the parish.' },
+  { id:'purification', name:'Purification and Enlightenment', full:'Lent',
+    desc:'The Lenten retreat before the sacraments: less about learning, more about prayer, repentance and the heart turning wholly to Christ.' },
+  { id:'mystagogy', name:'Mystagogy', full:'Easter to Pentecost',
+    desc:'Unfolding the mysteries you have received: reflecting on the sacraments and taking your place in the life and mission of the Church.' }
+];
+
+// offset = days from Easter Sunday for the usual date; null = set by the parish
+const RITES = [
+  { id:'begin', p:'inquiry', paths:['cand','cat'], offset:null,
+    t:{ both:'Began inquiry' },
+    b:{ both:'The day you first came to ask. Worth remembering: everything else grew from it.' } },
+  { id:'welcome', p:'inquiry', paths:['cand','cat'], offset:null,
+    t:{ cand:'Rite of Welcoming the Candidates', cat:'Rite of Acceptance into the Order of Catechumens' },
+    b:{ cand:'The parish welcomes you publicly as one already baptized who is seeking full communion. Your baptism is honoured, you are signed with the cross, and your sponsor stands with you. It opens the period of formation.',
+        cat:'You stand at the church door, declare what you ask of God’s Church, and are signed with the cross on your forehead and senses. From this day you are a catechumen, part of the household of Christ, and you may receive a Bible or a cross.' } },
+  { id:'sending', p:'catechumenate', paths:['cand','cat'], offset:-42,
+    t:{ both:'Rite of Sending' },
+    b:{ cand:'Usually celebrated in your parish just before you go to the cathedral. The community, and your sponsor, affirm your readiness and send you to the bishop. Not every parish celebrates it.',
+        cat:'Usually celebrated in your parish just before you go to the cathedral. Your godparent and the community testify to your readiness, and you may sign the Book of the Elect here. Not every parish celebrates it.' } },
+  { id:'election', p:'catechumenate', paths:['cand','cat'], offset:-42,
+    t:{ cand:'Call to Continuing Conversion', cat:'Rite of Election' },
+    b:{ cand:'Usually on the First Sunday of Lent, often with the bishop at the cathedral. The bishop recognises your desire for full communion and calls you to continue your conversion through Lent.',
+        cat:'Usually on the First Sunday of Lent with the bishop at the cathedral. Your name is enrolled in the Book of the Elect: from now on you are one of “the elect”, chosen for the sacraments at Easter.' } },
+  { id:'penitential', p:'purification', paths:['cand'], offset:-35,
+    t:{ cand:'Penitential Rite' },
+    b:{ cand:'Often celebrated on the Second Sunday of Lent. A prayer of healing and strengthening for baptized candidates, preparing you for the Sacrament of Penance. Not every parish celebrates it.' } },
+  { id:'confession', p:'purification', paths:['cand'], offset:null, link:'return',
+    t:{ cand:'First Confession' },
+    b:{ cand:'Baptized candidates celebrate the Sacrament of Penance before being received into full communion. Your team will help you choose a time.' } },
+  { id:'scrutinies', p:'purification', paths:['cat'], offset:-28,
+    t:{ cat:'The Scrutinies' },
+    b:{ cat:'Celebrated at Mass on the Third, Fourth and Fifth Sundays of Lent, with the great Gospels of John: the woman at the well (John 4), the man born blind (John 9) and the raising of Lazarus (John 11). The Church prays for you to be freed from what binds you and strengthened in what is good.' } },
+  { id:'presentations', p:'purification', paths:['cat'], offset:null,
+    t:{ cat:'Presentations of the Creed and the Lord’s Prayer' },
+    b:{ cat:'During Lent the Church entrusts to you her two great treasures: the Creed, the summary of what she believes, and the Lord’s Prayer, the pattern of how she prays.' } },
+  { id:'preparation', p:'purification', paths:['cat'], offset:-1,
+    t:{ cat:'Preparation Rites on Holy Saturday' },
+    b:{ cat:'On the morning of Holy Saturday, a day of prayer and fasting. These can include the Ephphetha (“be opened”) and your reciting of the Creed you received.' } },
+  { id:'vigil', p:'purification', paths:['cand','cat'], offset:-1,
+    t:{ cand:'Reception into Full Communion', cat:'Sacraments of Initiation' },
+    b:{ cand:'Often at the Easter Vigil. You profess the Catholic faith, are received into full communion, are confirmed, and receive the Eucharist for the first time. Reception can also take place at another time of year.',
+        cat:'At the Easter Vigil, the night of nights. You are baptized, confirmed, and receive the Eucharist for the first time, becoming a full member of the Body of Christ.' } },
+  { id:'pentecost', p:'mystagogy', paths:['cand','cat'], offset:49,
+    t:{ both:'Pentecost: close of Mystagogy' },
+    b:{ both:'Fifty days after Easter. The season of mystagogy ends, and you are sent out in the power of the Spirit you received.' } }
+];
+
+const SAINTS = [
+  { n:'St. John Henry Newman', f:'Oct 9', e:'1801–1890 · England', p:'Converts, scholars', tags:['Converts','Scholars'], d:'A leading Anglican theologian whose study of the early Church led him into the Catholic Church. He wrote of conscience and the development of doctrine.' },
+  { n:'St. Elizabeth Ann Seton', f:'Jan 4', e:'1774–1821 · USA', p:'Catholic schools, widows', tags:['Converts','Americas'], d:'Raised Episcopalian, she became Catholic after encountering the Real Presence while in Italy, and founded schools and a religious community.' },
+  { n:'St. Edith Stein', f:'Aug 9', e:'1891–1942 · Germany', p:'Europe, philosophers', tags:['Converts','Scholars','Martyrs'], d:'A Jewish philosopher who came to faith after reading St. Teresa of Ávila. As Teresa Benedicta of the Cross she died at Auschwitz.' },
+  { n:'St. Augustine of Hippo', f:'Aug 28', e:'354–430 · North Africa', p:'Theologians, those seeking God', tags:['Converts','Scholars','Africa'], d:'After a long and restless search he was baptized by St. Ambrose. His Confessions tell the story of a heart restless until it rests in God.' },
+  { n:'St. Paul the Apostle', f:'Jun 29 · Conversion Jan 25', e:'d. c. 67 · Rome', p:'Missionaries, converts, writers', tags:['Converts','Scripture','Martyrs'], d:'The persecutor turned apostle, whose letters form much of the New Testament.' },
+  { n:'St. Jerome', f:'Sep 30', e:'c. 342–420 · Bethlehem', p:'Scripture scholars, translators', tags:['Scripture','Scholars'], d:'Translated the Bible from Hebrew and Greek into Latin. He insisted that ignorance of Scripture is ignorance of Christ.' },
+  { n:'St. Ephrem the Syrian', f:'Jun 9', e:'c. 306–373 · Syria', p:'Spiritual directors, hymn writers', tags:['Scripture','Scholars','Prayer'], d:'A deacon and Doctor of the Church who taught the faith in Syriac hymns and poetry, a voice of the Aramaic-speaking Church.' },
+  { n:'St. Cyril of Jerusalem', f:'Mar 18', e:'c. 313–386 · Jerusalem', p:'Catechists', tags:['Scholars','Initiation'], d:'His lectures to those preparing for baptism, and to the newly baptized, are among the oldest guides to Christian initiation.' },
+  { n:'St. Thomas Aquinas', f:'Jan 28', e:'1225–1274 · Italy', p:'Students, Catholic schools', tags:['Scholars'], d:'The great synthesis of faith and reason. Near the end of his life he called all he had written straw compared with what he had seen.' },
+  { n:'St. Athanasius', f:'May 2', e:'c. 296–373 · Egypt', p:'Defender of orthodoxy', tags:['Scholars','Africa'], d:'Defended the full divinity of Christ through repeated exile. His Easter letter of 367 is the earliest to list the New Testament canon as we have it.' },
+  { n:'St. Joseph', f:'Mar 19', e:'1st century · Nazareth', p:'Fathers, workers, the universal Church', tags:['Work','Prayer'], d:'The quiet guardian of Jesus and Mary, who listened, obeyed and protected.' },
+  { n:'St. Matthew', f:'Sep 21', e:'1st century', p:'Accountants, bankers', tags:['Work','Scripture','Converts'], d:'The tax collector who left his table when Jesus said, “Follow me.”' },
+  { n:'St. Thomas More', f:'Jun 22', e:'1478–1535 · England', p:'Lawyers, statesmen', tags:['Work','Martyrs','Scholars'], d:'Lord Chancellor who would not betray his conscience; he died “the king’s good servant, but God’s first.”' },
+  { n:'St. Luke', f:'Oct 18', e:'1st century', p:'Physicians, artists', tags:['Scripture','Work'], d:'Evangelist of mercy, author of the Gospel and Acts, with the parables of the prodigal son and the good Samaritan.' },
+  { n:'St. Martin de Porres', f:'Nov 3', e:'1579–1639 · Peru', p:'Social justice, people of mixed race', tags:['Americas','Mercy'], d:'A Dominican brother of African and Spanish descent who cared for the sick and the poor of Lima, regardless of who they were.' },
+  { n:'St. Rose of Lima', f:'Aug 23', e:'1586–1617 · Peru', p:'The Americas, gardeners', tags:['Americas','Prayer'], d:'The first canonized saint of the Americas, given to prayer and to caring for the needy from her family home.' },
+  { n:'St. Juan Diego', f:'Dec 9', e:'1474–1548 · Mexico', p:'Indigenous peoples', tags:['Americas','Converts'], d:'An Indigenous convert to whom Our Lady of Guadalupe appeared, leaving her image on his tilma.' },
+  { n:'St. Kateri Tekakwitha', f:'Jul 14', e:'1656–1680 · North America', p:'Ecology, Indigenous peoples', tags:['Americas','Converts'], d:'A Mohawk woman who embraced the faith despite great hostility, known for her prayer and devotion to the Cross.' },
+  { n:'St. Josephine Bakhita', f:'Feb 8', e:'c. 1869–1947 · Sudan/Italy', p:'Survivors of trafficking', tags:['Africa','Converts','Mercy'], d:'Enslaved as a child, she came to know Christ in Italy, was baptized, and became a Canossian sister known for her gentleness.' },
+  { n:'St. Charles Lwanga', f:'Jun 3', e:'c. 1860–1886 · Uganda', p:'African youth', tags:['Africa','Martyrs','Converts'], d:'A young convert who protected the boys in his care at the royal court and was martyred with his companions.' },
+  { n:'St. Monica', f:'Aug 27', e:'331–387 · North Africa', p:'Mothers, patience', tags:['Africa','Prayer'], d:'Prayed for years for her son Augustine’s conversion and lived to see his baptism.' },
+  { n:'St. Peter', f:'Jun 29', e:'d. c. 64 · Rome', p:'The papacy, fishermen', tags:['Scripture','Martyrs'], d:'Impetuous, denied his Lord, was forgiven, and was given the keys. Hope for anyone who has fallen.' },
+  { n:'St. Mary Magdalene', f:'Jul 22', e:'1st century', p:'Penitents, apostle to the apostles', tags:['Scripture','Mercy'], d:'Freed by Jesus, faithful at the Cross, and the first witness of the Resurrection.' },
+  { n:'St. Michael the Archangel', f:'Sep 29', e:'Archangel', p:'Protection, police, the sick', tags:['Prayer'], d:'“Who is like God?” Defender of God’s people in spiritual battle.' },
+  { n:'St. Francis of Assisi', f:'Oct 4', e:'1181–1226 · Italy', p:'Animals, ecology, peace', tags:['Mercy','Prayer'], d:'Gave up everything to follow Christ in poverty and joy, and rebuilt the Church from within.' },
+  { n:'St. Dominic', f:'Aug 8', e:'1170–1221 · Spain', p:'Preachers, astronomers', tags:['Prayer','Scholars'], d:'Founded the Order of Preachers to teach the faith clearly; tradition links him closely with the Rosary.' },
+  { n:'St. Benedict', f:'Jul 11', e:'c. 480–547 · Italy', p:'Europe, monks', tags:['Prayer'], d:'His Rule of prayer and work, ora et labora, shaped Western monastic life.' },
+  { n:'St. Ignatius of Loyola', f:'Jul 31', e:'1491–1556 · Spain', p:'Retreats, soldiers', tags:['Converts','Prayer'], d:'A wounded soldier converted while reading the lives of Christ and the saints; his Spiritual Exercises teach discernment.' },
+  { n:'St. Teresa of Ávila', f:'Oct 15', e:'1515–1582 · Spain', p:'Those in religious life, headaches', tags:['Prayer','Scholars'], d:'Mystic, reformer and Doctor of the Church, who taught prayer as friendship with the One who loves us.' },
+  { n:'St. Thérèse of Lisieux', f:'Oct 1', e:'1873–1897 · France', p:'Missions, florists', tags:['Prayer'], d:'Her “little way” of doing small things with great love made her a Doctor of the Church.' },
+  { n:'St. Catherine of Siena', f:'Apr 29', e:'1347–1380 · Italy', p:'Europe, nurses', tags:['Prayer','Scholars'], d:'A laywoman of fierce prayer who counselled popes and called the Church to reform.' },
+  { n:'St. Faustina Kowalska', f:'Oct 5', e:'1905–1938 · Poland', p:'Divine Mercy', tags:['Mercy','Prayer'], d:'The humble sister through whom the message and image of Divine Mercy spread throughout the world.' },
+  { n:'St. Padre Pio', f:'Sep 23', e:'1887–1968 · Italy', p:'Confessors, stress relief', tags:['Prayer','Mercy'], d:'A Capuchin friar who spent long hours in the confessional: “Pray, hope and don’t worry.”' },
+  { n:'St. Maximilian Kolbe', f:'Aug 14', e:'1894–1941 · Poland', p:'Journalists, prisoners', tags:['Martyrs','Mercy'], d:'Gave his life at Auschwitz in place of a father of a family.' },
+  { n:'St. John Paul II', f:'Oct 22', e:'1920–2005 · Poland', p:'Families, World Youth Day', tags:['Scholars'], d:'Philosopher, pastor and pope, whose first words as pope were “Be not afraid.”' },
+  { n:'St. Patrick', f:'Mar 17', e:'5th century · Ireland', p:'Ireland, engineers', tags:['Converts'], d:'Taken as a slave to Ireland, he found God there, escaped, and returned as its apostle.' }
+];
+const SAINT_TAGS = ['Converts','Scholars','Scripture','Americas','Africa','Work','Mercy','Prayer','Martyrs','Initiation'];
+
+/* ================= State ================= */
+const KEY = 'ocia.journey.v1';
+const blank = () => ({ path:null, parish:'', rites:{}, sessions:[], saints:{ fav:[], why:{}, chosen:null }, sponsor:{ name:'', phone:'', email:'', notes:'' } });
+let S = blank();
+try { const r = JSON.parse(localStorage.getItem(KEY)); if (r && typeof r === 'object') S = Object.assign(blank(), r); } catch (_) {}
+let saveT = 0;
+function flush(){ clearTimeout(saveT); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (_) {} }
+function save(){ clearTimeout(saveT); saveT = setTimeout(flush, 250); }
+addEventListener('pagehide', flush);
+document.addEventListener('visibilitychange', () => { if (document.hidden) flush(); });
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
+
+/* ================= Dates ================= */
+function easter(y){
+  const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),
+    h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),
+    mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;
+  return new Date(Date.UTC(y,mo-1,da));
+}
+const iso = d => d.toISOString().slice(0,10);
+const todayISO = () => { const d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); };
+const addDays = (d,n) => new Date(d.getTime() + n*86400000);
+const fmt = s => new Date(s+'T12:00:00').toLocaleDateString(undefined,{ weekday:'short', day:'numeric', month:'long', year:'numeric' });
+const fmtShort = s => new Date(s+'T12:00:00').toLocaleDateString(undefined,{ day:'numeric', month:'short', year:'numeric' });
+const daysUntil = s => Math.round((new Date(s+'T12:00:00') - new Date(todayISO()+'T12:00:00'))/86400000);
+function nextEasterYear(){ const y = new Date().getFullYear(); return iso(easter(y)) >= todayISO() ? y : y+1; }
+
+/* ================= Rite helpers ================= */
+const pathRites = () => RITES.filter(r => r.paths.includes(S.path));
+const rTitle = r => r.t.both || r.t[S.path];
+const rBody = r => r.b.both || r.b[S.path];
+const rs = id => (S.rites[id] ||= { date:'', done:false, reflection:'' });
+function prefill(year){
+  const E = easter(year); let n = 0;
+  pathRites().forEach(r => { if (r.offset !== null && !rs(r.id).date){ rs(r.id).date = iso(addDays(E, r.offset)); n++; } });
+  save(); return n;
+}
+function nextRite(){
+  // The next step is the first one not yet celebrated, in the order of the journey
+  return pathRites().find(r => r.id !== 'begin' && !rs(r.id).done) || null;
+}
+
+/* ================= Journey ================= */
+const openRites = new Set();
+let prevPath = null;   // the path in use while the user is reconsidering it
+function renderJourney(){
+  const v = $('v-journey');
+  if (!S.path){
+    const y = nextEasterYear();
+    v.innerHTML = `
+      <div class="kicker">Welcome</div>
+      <h1>The Way Home</h1>
+      <p class="lede">A companion for the Order of Christian Initiation of Adults: the rites ahead, your session notes, your Confirmation saint, and a record of the journey.</p>
+      <h2>Which path are you on?</h2>
+      <p class="hint">The rites differ depending on whether you have already been baptized. If you’re unsure, your OCIA team will know.</p>
+      <button class="choice" data-path="cand"><strong>Candidate</strong><span>Already baptized in another Christian community, and seeking full communion with the Catholic Church.</span></button>
+      <button class="choice" data-path="cat"><strong>Catechumen</strong><span>Not yet baptized, and preparing for Baptism, Confirmation and First Communion.</span></button>
+      <label class="toggle"><input type="checkbox" id="setupPrefill" checked> <span>Fill in the usual Lent and Easter dates for Easter ${y} (${fmtShort(iso(easter(y)))}). Only empty dates are filled, and you can change any of them.</span></label>
+      ${prevPath ? `<p class="hint">Your dates, reflections and notes are kept whichever path you choose.</p><div class="actions"><button class="quiet" id="keepPath">Cancel, keep ${prevPath === 'cand' ? 'Candidate' : 'Catechumen'}</button></div>` : ''}`;
+    return;
+  }
+  const nx = nextRite();
+  let nextHTML = '';
+  if (nx){
+    const d = rs(nx.id).date, n = d ? daysUntil(d) : null;
+    nextHTML = `<div class="card gold next">
+      ${n !== null && n >= 0 ? `<div class="count">${n === 0 ? '✦' : n}<small>${n === 0 ? 'today' : n === 1 ? 'day' : 'days'}</small></div>` : ''}
+      <div class="label">Next on the way</div>
+      <div class="title">${esc(rTitle(nx))}</div>
+      <div class="when">${d ? fmt(d) : 'Date not set yet. Ask your OCIA team, then add it below.'}</div>
+    </div>`;
+  } else {
+    nextHTML = `<div class="card gold next"><div class="label">Welcome home</div><div class="title">Every step of the journey is complete.</div><div class="when">Thanks be to God.</div></div>`;
+  }
+  const herePeriod = nx ? nx.p : null;
+  const chosen = S.saints.chosen ? `<p>Confirmation saint: <span class="chosen">${esc(S.saints.chosen)}</span></p>` : '';
+
+  const periodsHTML = PERIODS.map(P => {
+    const list = pathRites().filter(r => r.p === P.id);
+    if (!list.length) return '';
+    return `<div class="period"><h2>${P.name}${P.id === herePeriod ? '<span class="here">You are here</span>' : ''}</h2>
+      <p>${P.full !== P.name ? `<em>${P.full}.</em> ` : ''}${P.desc}</p></div>
+      <div class="path">${list.map(r => {
+        const st = rs(r.id);
+        const cls = ['rite', st.done ? 'done' : '', nx && nx.id === r.id ? 'next-up' : ''].join(' ');
+        return `<details class="${cls}" data-rite="${r.id}" ${openRites.has(r.id) ? 'open' : ''}>
+          <summary><span class="dot"></span><span class="rite-title">${esc(rTitle(r))}</span>
+            <span class="rite-date">${st.done ? 'Done' + (st.date ? ' · ' + fmtShort(st.date) : '') : st.date ? fmt(st.date) : 'Date not set'}</span></summary>
+          <div class="rite-body">
+            <p class="about">${rBody(r)}</p>
+            ${r.link === 'return' ? `<p class="hint">Preparing? Your <a href="https://keithintrinidad.github.io/Return/" target="_blank" rel="noopener">Return</a> app walks through the rite step by step.</p>` : ''}
+            <label class="field" for="d-${r.id}">Date</label>
+            <input type="date" id="d-${r.id}" data-r="${r.id}" data-f="date" value="${esc(st.date)}">
+            <label class="toggle"><input type="checkbox" data-r="${r.id}" data-f="done" ${st.done ? 'checked' : ''}> <span>${r.id === 'begin' ? 'This happened' : 'Celebrated'}</span></label>
+            <label class="field" for="x-${r.id}">Reflection</label>
+            <textarea id="x-${r.id}" data-r="${r.id}" data-f="reflection" placeholder="What happened, who was there, what you felt or heard…">${esc(st.reflection)}</textarea>
+          </div></details>`;
+      }).join('')}</div>`;
+  }).join('');
+
+  v.innerHTML = `
+    <div class="kicker">${esc(S.parish) || 'Your path'}</div>
+    <h1>Your journey</h1>
+    <div class="pathline"><span>${S.path === 'cand' ? 'Candidate for full communion' : 'Catechumen preparing for Baptism'}</span><button class="linkbtn" id="changePath">Change</button></div>
+    ${nextHTML}${chosen}
+    ${periodsHTML}
+    <details class="settings"><summary>Settings and data</summary><div>
+      <label class="field" for="parish">Parish</label>
+      <input type="text" id="parish" value="${esc(S.parish)}" placeholder="e.g. Church of the Assumption">
+      <h3>Usual dates</h3>
+      <p class="hint">Fill in any empty dates using the usual Lent and Easter calendar. Always confirm with your parish.</p>
+      <div class="actions" style="margin:.5em 0"><select id="prefillYear" style="width:auto">${[0,1,2].map(i => { const y = new Date().getFullYear() + i; return `<option ${y === nextEasterYear() ? 'selected' : ''}>${y}</option>`; }).join('')}</select><button class="small" id="prefillBtn">Fill in dates</button></div>
+      <p class="status" id="prefillStatus"></p>
+      <h3>Backup</h3>
+      <p class="hint">Everything is stored on this device only. A backup file is not encrypted; keep it somewhere private.</p>
+      <div class="actions" style="margin:.5em 0"><button class="small" id="exportBtn">Export</button><button class="small" id="importBtn">Import</button><input type="file" id="importFile" accept=".json,application/json" hidden></div>
+      <p class="status" id="bkStatus"></p>
+      <h3>Delete</h3>
+      <button class="small danger" id="wipe">Delete everything</button>
+    </div></details>`;
+}
+
+$('v-journey').addEventListener('click', e => {
+  const c = e.target.closest('[data-path]');
+  if (c){ S.path = c.dataset.path; prevPath = null; if ($('setupPrefill') && $('setupPrefill').checked) prefill(nextEasterYear()); save(); renderJourney(); window.scrollTo({ top:0 }); return; }
+  if (e.target.id === 'changePath'){ prevPath = S.path; S.path = null; renderJourney(); window.scrollTo({ top:0 }); return; }
+  if (e.target.id === 'keepPath'){ S.path = prevPath; prevPath = null; renderJourney(); return; }
+  if (e.target.id === 'prefillBtn'){ const n = prefill(+$('prefillYear').value); renderJourney(); document.querySelector('details.settings').open = true; $('prefillStatus').textContent = n ? `${n} date${n === 1 ? '' : 's'} filled in. Confirm them with your parish.` : 'No empty dates to fill.'; return; }
+  if (e.target.id === 'exportBtn') return exportData();
+  if (e.target.id === 'importBtn') return $('importFile').click();
+  if (e.target.id === 'wipe'){ if (confirm('Delete everything in this app: dates, reflections, sessions, saints and sponsor details? This cannot be undone.')){ S = blank(); try { localStorage.removeItem(KEY); } catch (_) {} openRites.clear(); renderJourney(); window.scrollTo({ top:0 }); } }
+});
+$('v-journey').addEventListener('toggle', e => { const d = e.target; if (d.dataset && d.dataset.rite){ d.open ? openRites.add(d.dataset.rite) : openRites.delete(d.dataset.rite); } }, true);
+$('v-journey').addEventListener('input', e => {
+  const t = e.target;
+  if (t.id === 'parish'){ S.parish = t.value; save(); return; }
+  if (t.dataset.r && t.dataset.f === 'reflection'){ rs(t.dataset.r).reflection = t.value; save(); }
+});
+$('v-journey').addEventListener('change', e => {
+  const t = e.target; if (!t.dataset.r) return;
+  if (t.dataset.f === 'date'){ rs(t.dataset.r).date = t.value; }
+  if (t.dataset.f === 'done'){ rs(t.dataset.r).done = t.checked; if (t.checked && !rs(t.dataset.r).date) rs(t.dataset.r).date = todayISO(); }
+  save(); const y = window.scrollY; renderJourney(); window.scrollTo({ top:y });
+});
+$('v-journey').addEventListener('change', async e => {
+  if (e.target.id !== 'importFile') return;
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try {
+    const d = JSON.parse(await f.text()); if (!d || d.app !== 'The Way Home' || !d.data) throw 0;
+    if (!confirm('Replace what is in the app now with this backup?')) return;
+    S = Object.assign(blank(), d.data); save(); renderJourney();
+    document.querySelector('details.settings').open = true; $('bkStatus').textContent = 'Backup restored.';
+  } catch (_) { $('bkStatus').textContent = 'That file isn’t a backup from this app.'; }
+});
+function exportData(){
+  const blob = new Blob([JSON.stringify({ app:'The Way Home', version:1, exported:new Date().toISOString(), data:S }, null, 2)], { type:'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'the-way-home-' + todayISO() + '.json';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  $('bkStatus').textContent = 'Backup exported.';
+}
+
+/* ================= Sessions ================= */
+function renderSessions(){
+  const list = [...S.sessions].sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  const open = [];
+  list.forEach(s => (s.questions||[]).forEach((q,i) => { if (!q.done) open.push({ s, q, i }); }));
+  $('v-sessions').innerHTML = `
+    <div class="kicker">What I’m learning</div>
+    <h1>Sessions</h1>
+    ${open.length ? `<div class="card gold"><h3 style="margin-top:0">Questions to bring</h3><ul class="qlist">${open.map(o => `<li><input type="checkbox" data-s="${o.s.id}" data-q="${o.i}" aria-label="Mark answered"><span>${esc(o.q.q)}<small>${esc(o.s.topic || 'Session')} · ${o.s.date ? fmtShort(o.s.date) : ''}</small></span></li>`).join('')}</ul></div>` : ''}
+    <div class="actions"><button class="primary" id="newSession">New session</button></div>
+    ${list.length ? list.map(s => `<details class="session"><summary><span class="s-date">${s.date ? fmt(s.date) : 'No date'}</span><span class="s-topic">${esc(s.topic || 'Untitled session')}</span></summary>
+      <div style="padding-bottom:16px">
+        ${s.notes ? `<p class="plain">${esc(s.notes)}</p>` : ''}
+        ${s.ccc ? `<h3>Catechism</h3><p>${esc(s.ccc)}</p>` : ''}
+        ${s.scripture ? `<h3>Scripture</h3><p>${esc(s.scripture)}</p>` : ''}
+        ${(s.questions||[]).length ? `<h3>Questions</h3><ul class="qlist">${s.questions.map((q,i) => `<li class="${q.done ? 'answered' : ''}"><input type="checkbox" data-s="${s.id}" data-q="${i}" ${q.done ? 'checked' : ''} aria-label="Answered"><span>${esc(q.q)}</span></li>`).join('')}</ul>` : ''}
+        <div class="actions"><button class="small" data-edit="${s.id}">Edit</button><button class="small danger" data-del="${s.id}">Delete</button></div>
+      </div></details>`).join('') : '<p class="empty">No sessions yet. After your next OCIA class, add the topic, your notes and any questions you want to bring back.</p>'}`;
+}
+$('v-sessions').addEventListener('click', e => {
+  if (e.target.id === 'newSession') return editSession(null);
+  const ed = e.target.closest('[data-edit]'), del = e.target.closest('[data-del]');
+  if (ed) editSession(ed.dataset.edit);
+  if (del){ const s = S.sessions.find(x => x.id === del.dataset.del); if (s && confirm('Delete this session?')){ S.sessions = S.sessions.filter(x => x !== s); save(); renderSessions(); } }
+});
+$('v-sessions').addEventListener('change', e => {
+  const t = e.target; if (!t.dataset.s) return;
+  const s = S.sessions.find(x => x.id === t.dataset.s); if (!s) return;
+  s.questions[+t.dataset.q].done = t.checked; save(); renderSessions();
+});
+let editing = null;
+function editSession(id){
+  const s = id ? S.sessions.find(x => x.id === id) : { id:null, date:todayISO(), topic:'', notes:'', ccc:'', scripture:'', questions:[] };
+  editing = s;
+  $('v-session-edit').innerHTML = `
+    <div class="kicker">${id ? 'Edit session' : 'New session'}</div>
+    <h1>${id ? esc(s.topic || 'Session') : 'Session notes'}</h1>
+    <label class="field" for="eDate">Date</label><input type="date" id="eDate" value="${esc(s.date)}">
+    <label class="field" for="eTopic">Topic</label><input type="text" id="eTopic" value="${esc(s.topic)}" placeholder="e.g. The Eucharist">
+    <label class="field" for="eNotes">Notes</label><textarea id="eNotes" style="min-height:160px">${esc(s.notes)}</textarea>
+    <label class="field" for="eCcc">Catechism paragraphs</label><input type="text" id="eCcc" value="${esc(s.ccc)}" placeholder="e.g. CCC 1322–1419">
+    <label class="field" for="eScr">Scripture</label><input type="text" id="eScr" value="${esc(s.scripture)}" placeholder="e.g. John 6:22–69">
+    <label class="field" for="eQ">Questions to bring</label>
+    <p class="hint">One per line. You can tick them off as they’re answered.</p>
+    <textarea id="eQ">${esc((s.questions||[]).map(q => q.q).join('\n'))}</textarea>
+    <div class="actions"><button class="primary" id="eSave">Save</button><button class="quiet" id="eCancel">Cancel</button></div>`;
+  showView('session-edit', 'sessions');
+}
+$('v-session-edit').addEventListener('click', e => {
+  if (e.target.id === 'eCancel'){ editing = null; return go('sessions'); }
+  if (e.target.id !== 'eSave') return;
+  const old = editing.questions || [];
+  const qs = $('eQ').value.split('\n').map(x => x.trim()).filter(Boolean).map(q => ({ q, done: !!(old.find(o => o.q === q) || {}).done }));
+  const rec = { id: editing.id || uid(), date:$('eDate').value, topic:$('eTopic').value.trim(), notes:$('eNotes').value.trim(), ccc:$('eCcc').value.trim(), scripture:$('eScr').value.trim(), questions:qs };
+  const i = S.sessions.findIndex(x => x.id === rec.id); i >= 0 ? S.sessions[i] = rec : S.sessions.push(rec);
+  save(); editing = null; go('sessions');
+});
+
+/* ================= Saints ================= */
+let saintFilter = 'All', saintQuery = '';
+function renderSaints(){
+  const fav = S.saints.fav;
+  const q = saintQuery.toLowerCase();
+  const list = SAINTS.filter(s => (saintFilter === 'All' || (saintFilter === 'Shortlist' ? fav.includes(s.n) : s.tags.includes(saintFilter)))
+    && (!q || (s.n + ' ' + s.p + ' ' + s.d + ' ' + s.e).toLowerCase().includes(q)));
+  const shortlist = SAINTS.filter(s => fav.includes(s.n));
+  $('v-saints').innerHTML = `
+    <div class="kicker">A friend in heaven</div>
+    <h1>Confirmation saint</h1>
+    <p class="lede">At Confirmation you may take the name of a saint as a patron and companion. Browse, shortlist the ones who draw you, and write down why.</p>
+    ${S.saints.chosen ? `<div class="card gold"><h3 style="margin-top:0">My Confirmation saint</h3><p class="chosen" style="margin:0">${esc(S.saints.chosen)}</p></div>` : ''}
+    ${shortlist.length ? `<h2>My shortlist</h2>${shortlist.map(s => `<div class="card">
+        <div class="saint" style="border:0;padding:0"><div class="info"><div class="name">${s.n}</div><div class="meta">Feast ${s.f}</div></div>
+        <button class="star" data-fav="${esc(s.n)}" aria-pressed="true" aria-label="Remove from shortlist">★</button></div>
+        <label class="field" for="why-${SAINTS.indexOf(s)}">Why this saint draws me</label>
+        <textarea id="why-${SAINTS.indexOf(s)}" data-why="${esc(s.n)}">${esc(S.saints.why[s.n] || '')}</textarea>
+        <div class="actions" style="margin:.8em 0 0">${S.saints.chosen === s.n ? `<button class="small quiet" data-choose="">Undo choice</button>` : `<button class="small" data-choose="${esc(s.n)}">Choose as my saint</button>`}</div>
+      </div>`).join('')}` : ''}
+    <h2>Explore</h2>
+    <input type="search" id="saintSearch" placeholder="Search by name, patronage or story" value="${esc(saintQuery)}">
+    <div class="chips" role="group" aria-label="Filter saints">${['All','Shortlist',...SAINT_TAGS].map(t => `<button class="chip" data-tag="${t}" aria-pressed="${t === saintFilter}">${t}</button>`).join('')}</div>
+    <div id="saintList">${list.length ? list.map(s => `<div class="saint"><div class="info">
+        <div class="name">${s.n}</div><div class="meta">Feast ${s.f} · ${s.e}</div>
+        <div class="pat"><strong>Patron of</strong> ${s.p}</div><p class="note">${s.d}</p></div>
+        <button class="star" data-fav="${esc(s.n)}" aria-pressed="${fav.includes(s.n)}" aria-label="${fav.includes(s.n) ? 'Remove from' : 'Add to'} shortlist">★</button></div>`).join('') : '<p class="empty">No saints match. Try another word or filter.</p>'}</div>
+    <p class="hint" style="margin-top:1.4em">This is a starting list, not the full calendar. Any canonized saint, or a title of Our Lord or Our Lady, can be chosen; talk it over with your sponsor and your OCIA team.</p>`;
+}
+$('v-saints').addEventListener('click', e => {
+  const f = e.target.closest('[data-fav]'), t = e.target.closest('[data-tag]'), c = e.target.closest('[data-choose]');
+  if (f){ const n = f.dataset.fav, i = S.saints.fav.indexOf(n); i >= 0 ? S.saints.fav.splice(i,1) : S.saints.fav.push(n); if (i >= 0 && S.saints.chosen === n) S.saints.chosen = null; save(); keepScroll(renderSaints); }
+  if (t){ saintFilter = t.dataset.tag; keepScroll(renderSaints); }
+  if (c){ S.saints.chosen = c.dataset.choose || null; save(); keepScroll(renderSaints); }
+});
+$('v-saints').addEventListener('input', e => {
+  if (e.target.dataset.why !== undefined){ S.saints.why[e.target.dataset.why] = e.target.value; save(); }
+  if (e.target.id === 'saintSearch'){ saintQuery = e.target.value; const pos = e.target.selectionStart; keepScroll(renderSaints); const s = $('saintSearch'); s.focus(); s.setSelectionRange(pos,pos); }
+});
+function keepScroll(fn){ const y = window.scrollY; fn(); window.scrollTo({ top:y }); }
+
+/* ================= Sponsor ================= */
+function renderSponsor(){
+  const sp = S.sponsor, who = S.path === 'cat' ? 'godparent' : 'sponsor';
+  $('v-sponsor').innerHTML = `
+    <div class="kicker">Walking with me</div>
+    <h1>My ${who}</h1>
+    <p class="lede">Your ${who} accompanies you through the rites and stands with you as a witness of faith.</p>
+    <label class="field" for="spName">Name</label><input type="text" id="spName" data-sp="name" value="${esc(sp.name)}" autocomplete="off">
+    <label class="field" for="spPhone">Phone</label><input type="tel" id="spPhone" data-sp="phone" value="${esc(sp.phone)}" autocomplete="off">
+    <label class="field" for="spEmail">Email</label><input type="email" id="spEmail" data-sp="email" value="${esc(sp.email)}" autocomplete="off">
+    <div class="actions" id="spLinks">${spLinks()}</div>
+    <label class="field" for="spNotes">Notes from our conversations</label>
+    <textarea id="spNotes" data-sp="notes" style="min-height:160px" placeholder="What we talked about, advice, things to follow up…">${esc(sp.notes)}</textarea>
+    <h2>A prayer for my ${who}</h2>
+    <p class="serif" style="font-size:1.3rem;line-height:1.5;border-left:3px solid var(--gold);padding-left:16px">Lord, thank you for the one you have given to walk beside me. Bless ${sp.name ? esc(sp.name.split(' ')[0]) : 'my ' + who} with joy in their own faith, wisdom in their counsel, and patience with my questions. Let their witness lead me closer to you, and reward them for their kindness. Amen.</p>`;
+}
+function spLinks(){
+  const sp = S.sponsor, tel = sp.phone.replace(/[^\d+]/g,'');
+  return (tel ? `<a class="btnlink" href="tel:${tel}">Call</a><a class="btnlink" href="sms:${tel}">Message</a>` : '')
+    + (sp.email ? `<a class="btnlink" href="mailto:${esc(sp.email)}">Email</a>` : '');
+}
+$('v-sponsor').addEventListener('input', e => {
+  const k = e.target.dataset.sp; if (!k) return;
+  S.sponsor[k] = e.target.value; save();
+  if (k === 'phone' || k === 'email') $('spLinks').innerHTML = spLinks();
+});
+$('v-sponsor').addEventListener('change', e => { if (e.target.dataset.sp === 'name') keepScroll(renderSponsor); });
+
+/* ================= About ================= */
+function renderAbout(){
+  $('v-about').innerHTML = `
+    <div class="kicker">About</div>
+    <h1>The Way Home</h1>
+    <p class="lede">A companion for the Order of Christian Initiation of Adults (OCIA), for anyone journeying into the Catholic Church.</p>
+    <h2>What’s inside</h2>
+    <p><strong>Journey</strong> shows the periods and rites of OCIA for your path, with explanations, your dates, a countdown to the next step, and space to reflect on each one. <strong>Sessions</strong> keeps your class notes and gathers your open questions in one place. <strong>Saints</strong> helps you explore and choose a Confirmation saint. <strong>Sponsor</strong> keeps your sponsor’s or godparent’s details and your conversations.</p>
+    <h2>Privacy</h2>
+    <p>Everything you enter is stored on this device only and is never sent anywhere. You can export a backup or delete everything from <em>Settings and data</em> on the Journey screen.</p>
+    <h2>A note on dates</h2>
+    <p>The usual dates follow the Lent and Easter calendar, but every parish and diocese arranges its own, and not every parish celebrates every optional rite. Your OCIA team is the guide; this app is a companion.</p>
+    <p class="credit">Version 1.0 · Built by Claude using material provided by and under the guidance of Keith Francis. Licensed <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a>.</p>
+    <div class="actions"><button class="primary" id="aboutBack">Back</button></div>`;
+}
+$('v-about').addEventListener('click', e => { if (e.target.id === 'aboutBack') go(lastTab); });
+
+/* ================= Navigation & theme ================= */
+let lastTab = 'journey';
+function showView(view, tab){
+  document.querySelectorAll('main > section').forEach(s => { s.hidden = s.id !== 'v-' + view; if (!s.hidden){ s.classList.remove('fade'); void s.offsetWidth; s.classList.add('fade'); } });
+  document.querySelectorAll('nav button').forEach(b => b.dataset.tab === tab ? b.setAttribute('aria-current','page') : b.removeAttribute('aria-current'));
+  window.scrollTo({ top:0 });
+}
+function go(tab){
+  lastTab = tab;
+  ({ journey:renderJourney, sessions:renderSessions, saints:renderSaints, sponsor:renderSponsor })[tab]();
+  showView(tab, tab);
+}
+document.querySelector('nav').addEventListener('click', e => { const b = e.target.closest('[data-tab]'); if (b) go(b.dataset.tab); });
+$('aboutBtn').addEventListener('click', () => { renderAbout(); showView('about', null); });
+
+const THEMES = ['auto','light','dark'], LABEL = { auto:'Auto', light:'Light', dark:'Dark' };
+const curTheme = () => document.documentElement.dataset.theme || 'auto';
+function applyTheme(t){
+  t === 'auto' ? delete document.documentElement.dataset.theme : document.documentElement.dataset.theme = t;
+  try { t === 'auto' ? localStorage.removeItem('ocia.theme') : localStorage.setItem('ocia.theme', t); } catch (_) {}
+  $('themeLabel').textContent = LABEL[t];
+  const dark = t === 'dark' || (t === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#0B110E' : '#1F4D3A');
+}
+$('themeBtn').addEventListener('click', () => applyTheme(THEMES[(THEMES.indexOf(curTheme()) + 1) % 3]));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => applyTheme(curTheme()));
+applyTheme(curTheme());
+
+go('journey');
+
+/* ================= Install prompt ================= */
+let deferredInstall = null;
+const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const installDismissed = () => { try { return sessionStorage.getItem('ocia.installDismissed') === '1'; } catch (_) { return false; } };
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstall = e;
+  if (isStandalone() || installDismissed()) return;
+  $('installText').textContent = 'Install this app on your device for quick, offline access.';
+  $('installBtn').hidden = false; $('installCard').hidden = false;
+});
+$('installBtn').addEventListener('click', async () => {
+  if (!deferredInstall) return;
+  $('installCard').hidden = true; deferredInstall.prompt();
+  await deferredInstall.userChoice.catch(() => null);
+  deferredInstall = null;
+});
+window.addEventListener('appinstalled', () => { deferredInstall = null; $('installCard').hidden = true; });
+$('installDismiss').addEventListener('click', () => {
+  $('installCard').hidden = true;
+  try { sessionStorage.setItem('ocia.installDismissed', '1'); } catch (_) {}
+});
+if (isIOS() && !isStandalone() && !installDismissed()){
+  $('installText').textContent = 'To install, tap the Share button, then “Add to Home Screen”.';
+  $('installCard').hidden = false;
+}
+
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>

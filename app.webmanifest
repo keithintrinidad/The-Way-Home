@@ -1,0 +1,19 @@
+{
+  "name": "The Way Home — An OCIA Journey",
+  "short_name": "Way Home",
+  "description": "A companion for the Order of Christian Initiation of Adults: the rites ahead, session notes, a Confirmation saint, and a record of the journey.",
+  "id": "the-way-home-ocia-journey",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F3F4EF",
+  "theme_color": "#1F4D3A",
+  "lang": "en",
+  "categories": ["lifestyle", "education", "books"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
